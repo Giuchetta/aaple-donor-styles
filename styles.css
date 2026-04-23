@@ -1,0 +1,888 @@
+/* =========================================================
+   AAPLE Academy Donor Page — Custom Styles
+   For DonorPerfect Classic WebLink forms
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --maroon: #8B2E2E;
+  --maroon-deep: #6B1F1F;
+  --maroon-soft: #F5EAEA;
+  --navy: #1a2b4a;
+  --gold: #C9A66B;
+  --cream: #FAF7F2;
+  --cream-2: #F2EEE6;
+  --ink: #1a1a1a;
+  --muted: #6B6660;
+  --hairline: #E5E0D8;
+  --danger: #B54343;
+  --danger-soft: #FBE9E9;
+  --shadow-md: 0 4px 16px rgba(26,26,26,0.06);
+  --shadow-lg: 0 20px 50px rgba(26,26,26,0.08);
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+}
+
+/* ---------- Override DonorPerfect's Bootstrap container constraints ---------- */
+body.container,
+body#bodyContainer {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: 'DM Sans', -apple-system, sans-serif !important;
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  color: var(--ink) !important;
+  background: var(--cream) !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+#container.contentbg {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+#divMain {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Hide DonorPerfect's default header wrapper styling */
+#pnlHeader {
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Hide the old content that used to be in the header (letter, etc.) */
+#pnlHeader .fr-view > p,
+#pnlHeader .fr-view > h4,
+#pnlHeader .fr-view > table,
+#pnlHeader .fr-view > div[style*="text-align: center"] {
+  /* These should be removed via the header editor, but hide as a safety net */
+}
+
+/* ---------- Hero section (our custom HTML) ---------- */
+.aaple-hero {
+  background: var(--cream);
+  padding: 60px 24px 80px;
+  border-bottom: 1px solid var(--hairline);
+}
+.aaple-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+.aaple-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.aaple-motif {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  font-family: 'DM Sans', sans-serif;
+}
+.aaple-motif::before,
+.aaple-motif::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--maroon);
+  opacity: 0.4;
+}
+.aaple-hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 20px 0;
+  color: var(--ink);
+}
+.aaple-hero h1 em {
+  font-style: italic;
+  color: var(--maroon);
+}
+.aaple-hero p {
+  font-size: 19px;
+  color: var(--muted);
+  max-width: 460px;
+  margin: 0;
+  line-height: 1.6;
+}
+.aaple-hero-photo {
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, rgba(139,46,46,0.15), rgba(26,43,74,0.25)),
+              linear-gradient(180deg, #d4c4a8 0%, #b8a589 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.aaple-hero-photo.has-image {
+  background: var(--cream-2);
+}
+.aaple-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+.aaple-hero-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background: rgba(255,255,255,0.95);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  box-shadow: var(--shadow-md);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+}
+.aaple-hero-badge strong {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  color: var(--maroon);
+  font-weight: 500;
+}
+
+/* ---------- Form section wrapper ---------- */
+#pnlFields {
+  background: var(--cream-2);
+  padding: 80px 24px;
+  margin: 0 !important;
+}
+#pnlFields > div {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Progress indicator (injected by JS) ---------- */
+.aaple-progress {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--hairline);
+}
+.aaple-progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 70px;
+}
+.aaple-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--hairline);
+  background: #fff;
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+.aaple-plabel {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.3s ease;
+}
+.aaple-progress-step.active .aaple-dot {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--maroon-soft);
+}
+.aaple-progress-step.active .aaple-plabel { color: var(--maroon); }
+.aaple-progress-step.completed .aaple-dot {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: #fff;
+}
+.aaple-progress-step.completed .aaple-dot-num { display: none; }
+.aaple-progress-step.completed .aaple-dot::before {
+  content: "";
+  width: 10px; height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+.aaple-progress-line {
+  height: 2px;
+  background: var(--hairline);
+  position: relative;
+  margin-top: -24px;
+  border-radius: 2px;
+}
+.aaple-progress-line::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--maroon);
+  border-radius: 2px;
+  width: 0;
+  transition: width 0.4s ease;
+}
+.aaple-progress-line.filled::after { width: 100%; }
+
+/* ---------- Steps (injected by JS — wraps the fieldsets) ---------- */
+.aaple-step { display: none; }
+.aaple-step.active {
+  display: block;
+  animation: aapleFade 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@keyframes aapleFade {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.aaple-step-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+.aaple-step-intro {
+  color: var(--muted);
+  margin: 0 0 32px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ---------- Fieldset restyling ---------- */
+fieldset.wSectionTableCSS {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 0 24px !important;
+  background: transparent !important;
+}
+fieldset.wSectionTableCSS > legend {
+  display: none !important;
+}
+
+/* ---------- Form field spacing ---------- */
+.form-inline.label-up {
+  margin-bottom: 18px !important;
+  display: block !important;
+}
+.form-inline.label-up .form-group {
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+.form-inline.label-up .form-group > label {
+  display: block !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+  margin-bottom: 6px !important;
+  line-height: 1.4;
+}
+/* Required asterisk styling */
+.glyphicon-asterisk.form-control-feedback {
+  color: var(--maroon) !important;
+  font-size: 8px !important;
+  font-family: sans-serif !important;
+  position: static !important;
+  float: right !important;
+  margin-top: 4px !important;
+  margin-left: 8px !important;
+  display: inline-block !important;
+}
+.glyphicon-asterisk.form-control-feedback::before {
+  content: "required" !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: var(--maroon) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Inputs, selects, textareas ---------- */
+.form-control {
+  width: 100% !important;
+  padding: 12px 14px !important;
+  border: 1.5px solid var(--hairline) !important;
+  border-radius: var(--radius-md) !important;
+  background: #fff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 15px !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s !important;
+}
+.form-control:focus {
+  outline: none !important;
+  border-color: var(--maroon) !important;
+  box-shadow: 0 0 0 3px rgba(139,46,46,0.1) !important;
+}
+.form-control::placeholder { color: #B5AFA5; }
+
+/* Select arrow */
+select.form-control {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B6660' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  padding-right: 40px !important;
+}
+
+/* Inline expiration month/year */
+select.form-control-inline {
+  display: inline-block !important;
+  width: calc(50% - 5px) !important;
+  margin-right: 5px !important;
+}
+select.form-control-inline + select.form-control-inline {
+  margin-right: 0 !important;
+  margin-left: 5px !important;
+}
+
+/* Invalid field styling */
+.form-control.aaple-invalid {
+  border-color: var(--danger) !important;
+  background: var(--danger-soft) !important;
+}
+
+/* ---------- STEP 1: Donation amount pill buttons ---------- */
+.amount-group.col-group {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.btn-group[data-toggle="buttons"] {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+.btn-group[data-toggle="buttons"] > div:first-child {
+  display: contents !important;
+}
+
+/* Each amount option (DP wraps these in label.btn.btn-primary.col-xs-12) */
+.btn-group[data-toggle="buttons"] label.btn.btn-primary {
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #fff !important;
+  border: 1.5px solid var(--hairline) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--ink) !important;
+  font-weight: 600 !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 15px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  box-shadow: none !important;
+  float: none !important;
+  min-height: 60px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.btn-group[data-toggle="buttons"] label.btn.btn-primary:hover {
+  border-color: var(--maroon) !important;
+  background: var(--maroon-soft) !important;
+}
+.btn-group[data-toggle="buttons"] label.btn.btn-primary.active {
+  background: var(--maroon) !important;
+  border-color: var(--maroon) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(139,46,46,0.25) !important;
+}
+
+/* Hide DP's circle icon (we don't need it with our pill design) */
+.btn-group[data-toggle="buttons"] i.fa-circle {
+  display: none !important;
+}
+/* Hide the screen-reader-only radio inputs */
+.btn-group[data-toggle="buttons"] input[type="radio"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Amount wrapper inside each pill */
+.amount-wrapper.remove-set-width,
+.amounts-left.long-text {
+  display: block !important;
+  width: 100% !important;
+  padding: 14px 16px !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+.amount-radio-option.wrapping-text {
+  color: inherit !important;
+  font-weight: inherit !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+  display: block !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+/* The "Other" amount option (last one with text input) */
+label.btn.btn-primary.col-xs-12.other-amount {
+  grid-column: span 2 !important;
+}
+.otherAmountText.other-amount-long-text {
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 14px 16px !important;
+  text-align: center !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: inherit !important;
+}
+.otherAmountText.other-amount-long-text::placeholder {
+  color: var(--ink);
+  opacity: 0.8;
+}
+.btn-primary.other-amount.active .otherAmountText::placeholder {
+  color: rgba(255,255,255,0.85);
+}
+.otherAmountText.other-amount-long-text:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------- STEP 1: Donation type toggle (One-Time / Recurring) ---------- */
+#Part\|4121\|giftPledgeType\|\|N\|giftPledgeType_pnlRblGiftPledge > .form-group {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0 !important;
+  background: var(--cream-2) !important;
+  border: 1px solid var(--hairline) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 4px !important;
+  margin: 0 !important;
+}
+
+label.control.radio {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 16px !important;
+  margin: 0 !important;
+  border-radius: var(--radius-pill) !important;
+  cursor: pointer !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: var(--muted) !important;
+  transition: all 0.18s ease !important;
+  min-height: 0 !important;
+}
+label.control.radio input[type="radio"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+label.control.radio .control-indicator { display: none !important; }
+label.control.radio > span:last-child {
+  color: inherit !important;
+}
+/* Active state for selected radio */
+label.control.radio.aaple-selected {
+  background: var(--ink) !important;
+  color: #fff !important;
+}
+
+/* Frequency row — hide the weird frequency controls we don't want */
+.form-inline.label-up .form-group input[style*="visibility:hidden"],
+.form-inline.label-up .form-group select[style*="visibility:hidden"] {
+  display: none !important;
+}
+#lblGiftPledgeFreq111 { display: none !important; }
+
+/* ---------- STEP 3: Checkbox (Same As Above) ---------- */
+label.control.checkbox {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 14px 16px !important;
+  background: var(--cream) !important;
+  border: 1px solid var(--hairline) !important;
+  border-radius: var(--radius-md) !important;
+  margin: 0 0 18px !important;
+  cursor: pointer !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: var(--ink) !important;
+}
+label.control.checkbox input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  accent-color: var(--maroon) !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  position: static !important;
+  opacity: 1 !important;
+}
+label.control.checkbox .control-indicator { display: none !important; }
+
+/* ---------- Hide DP's original Next button (we replace with our own) ---------- */
+#pnlLinks,
+#btnConfirm12345 {
+  display: none !important;
+}
+
+/* ---------- Our Navigation buttons (injected by JS) ---------- */
+.aaple-nav-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+.aaple-btn-back,
+.aaple-btn-continue {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+.aaple-btn-back {
+  padding: 16px 20px;
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--hairline);
+  font-size: 15px;
+}
+.aaple-btn-back:hover { color: var(--ink); border-color: var(--ink); }
+.aaple-btn-back[hidden] { display: none; }
+.aaple-btn-continue {
+  flex: 1;
+  padding: 18px 24px;
+  background: var(--maroon);
+  color: #fff;
+  font-size: 16px;
+  box-shadow: 0 4px 14px rgba(139,46,46,0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.aaple-btn-continue:hover { background: var(--maroon-deep); }
+.aaple-btn-continue:active { transform: translateY(1px); }
+
+.aaple-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  border: 1px solid rgba(181,67,67,0.25);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+}
+.aaple-error-banner[hidden] { display: none; }
+
+/* Trust row (injected by JS at top of Step 3) */
+.aaple-trust-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--maroon-soft);
+  border-radius: var(--radius-md);
+  color: var(--maroon-deep);
+  font-size: 13px;
+  margin-bottom: 24px;
+  line-height: 1.4;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ---------- Impact section (custom HTML in footer) ---------- */
+.aaple-impact {
+  background: var(--cream-2);
+  padding: 80px 24px;
+  border-top: 1px solid var(--hairline);
+}
+.aaple-impact h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 500;
+  margin: 24px 0 56px;
+  max-width: 640px;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.aaple-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin-bottom: 56px;
+}
+.aaple-stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 400;
+  color: var(--maroon);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.aaple-stat-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 220px;
+}
+.aaple-impact-callout {
+  max-width: 720px;
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
+  font-size: 19px;
+  color: var(--ink);
+  line-height: 1.6;
+  font-family: 'DM Sans', sans-serif;
+}
+.aaple-highlight {
+  display: inline-block;
+  background: linear-gradient(transparent 60%, rgba(201,166,107,0.35) 60%);
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  padding: 0 4px;
+}
+
+/* ---------- Testimonials section ---------- */
+.aaple-testimonials {
+  background: var(--cream);
+  padding: 80px 24px;
+}
+.aaple-testimonials h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(32px, 3.6vw, 48px);
+  font-weight: 500;
+  margin: 20px 0 56px;
+  max-width: 640px;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.aaple-quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.aaple-quote-card {
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px 32px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.aaple-quote-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.aaple-quote-card::before {
+  content: "\201C";
+  font-family: 'Fraunces', serif;
+  font-size: 80px;
+  color: var(--maroon);
+  position: absolute;
+  top: 0;
+  left: 28px;
+  line-height: 1;
+  opacity: 0.9;
+}
+.aaple-quote-text {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 20px 0 28px;
+}
+.aaple-quote-person {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+}
+.aaple-quote-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cream-2), #d4c4a8);
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+.aaple-quote-name {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+.aaple-quote-role {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Footer section (trust, contact, check info) ---------- */
+#pnlFooter {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#pnlFooter fieldset.wSectionTableCSS.baseLoaded {
+  background: var(--navy) !important;
+  color: #cdd3de !important;
+  padding: 80px 24px 40px !important;
+  border: none !important;
+  margin: 0 !important;
+}
+.aaple-footer {
+  background: var(--navy);
+  color: #cdd3de;
+  padding: 80px 24px 40px;
+}
+.aaple-footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 56px;
+  margin-bottom: 56px;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.aaple-footer h3 {
+  font-family: 'DM Sans', sans-serif;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+.aaple-footer p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 8px;
+  color: #cdd3de;
+}
+.aaple-footer a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.aaple-footer a:hover { color: #fff; }
+.aaple-footer-tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  margin-top: 12px;
+}
+.aaple-footer-bottom {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: #8a92a3;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ---------- Hide DP's default footer content we don't want ---------- */
+#pnlFooter .default-footer-content,
+#pnlFooter .fr-view > p,
+#pnlFooter #divContactInfo {
+  display: none !important;
+}
+
+/* Hide DonorPerfect branding/godaddy seal at bottom (they still appear but minimally) */
+body > div[style*="vertical-align:bottom"] {
+  background: var(--navy);
+  padding: 20px 24px !important;
+}
+body > div[style*="vertical-align:bottom"] .wSectionTableCSS {
+  background: transparent !important;
+  border: none !important;
+}
+body > div[style*="vertical-align:bottom"] > div:last-child {
+  color: #8a92a3 !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .aaple-hero { padding: 40px 20px 60px; }
+  .aaple-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .aaple-hero-photo { aspect-ratio: 4/3; order: -1; }
+  .aaple-stats { grid-template-columns: 1fr; gap: 32px; }
+  .aaple-quote-grid { grid-template-columns: 1fr; gap: 20px; }
+  .aaple-footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .aaple-impact, .aaple-testimonials { padding: 60px 20px; }
+  #pnlFields { padding: 60px 20px; }
+  #pnlFields > div { padding: 28px 20px; border-radius: var(--radius-md); }
+}
+
+@media (max-width: 640px) {
+  body#bodyContainer { font-size: 16px !important; }
+  .btn-group[data-toggle="buttons"] { grid-template-columns: 1fr !important; }
+  label.btn.btn-primary.col-xs-12.other-amount { grid-column: span 1 !important; }
+  .aaple-hero h1 { font-size: 36px; }
+  .aaple-progress { margin-bottom: 28px; padding-bottom: 20px; gap: 6px; }
+  .aaple-progress-step { min-width: 44px; }
+  .aaple-dot { width: 32px; height: 32px; font-size: 13px; }
+  .aaple-plabel { display: none; }
+  .aaple-progress-line { margin-top: 0; }
+  .aaple-step-title { font-size: 22px; }
+  .aaple-nav-buttons { flex-direction: column-reverse; }
+  .aaple-btn-back { width: 100%; padding: 14px; }
+}
