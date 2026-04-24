@@ -170,11 +170,92 @@ body#bodyContainer {
 #pnlFields > div {
   max-width: 720px;
   margin: 0 auto;
-  background: #fff;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-lg);
-  padding: 48px;
-  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- 3-step visual grouping (CSS-only, works without JS) ----------
+   Step 1 = donation fieldset
+   Step 2 = contact info fieldset
+   Step 3 = payment method + credit card + billing address (chained as one card)
+*/
+fieldset#\34 121.wSectionTableCSS,
+fieldset[id="section_Contact Information"].wSectionTableCSS,
+fieldset#section_pa.wSectionTableCSS {
+  background: #fff !important;
+  border: 1px solid var(--hairline) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 88px 48px 48px !important;
+  box-shadow: var(--shadow-lg) !important;
+  margin: 0 0 24px !important;
+  position: relative !important;
+}
+
+/* Step 3: section_pa opens the card; cc and billing chain underneath. */
+fieldset#section_pa.wSectionTableCSS {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 24px !important;
+}
+fieldset#section_cc.wSectionTableCSS,
+fieldset[id="section_Billing Address"].wSectionTableCSS {
+  background: #fff !important;
+  border: 1px solid var(--hairline) !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 24px 48px !important;
+  box-shadow: var(--shadow-lg) !important;
+  position: relative !important;
+}
+fieldset[id="section_Billing Address"].wSectionTableCSS {
+  border-bottom-left-radius: var(--radius-lg) !important;
+  border-bottom-right-radius: var(--radius-lg) !important;
+  padding-bottom: 48px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Numbered badges */
+fieldset#\34 121::before { content: "01"; }
+fieldset[id="section_Contact Information"]::before { content: "02"; }
+fieldset#section_pa::before { content: "03"; }
+
+fieldset#\34 121::before,
+fieldset[id="section_Contact Information"]::before,
+fieldset#section_pa::before {
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--maroon);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 0 4px var(--maroon-soft);
+}
+
+/* Step titles */
+fieldset#\34 121::after { content: "Your gift"; }
+fieldset[id="section_Contact Information"]::after { content: "About you"; }
+fieldset#section_pa::after { content: "Payment"; }
+
+fieldset#\34 121::after,
+fieldset[id="section_Contact Information"]::after,
+fieldset#section_pa::after {
+  position: absolute;
+  top: 36px;
+  left: 92px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 40px;
+  letter-spacing: -0.01em;
 }
 
 /* ---------- Progress indicator (injected by JS) ---------- */
@@ -869,7 +950,40 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
   .aaple-footer-grid { grid-template-columns: 1fr; gap: 40px; }
   .aaple-impact, .aaple-testimonials { padding: 60px 20px; }
   #pnlFields { padding: 60px 20px; }
-  #pnlFields > div { padding: 28px 20px; border-radius: var(--radius-md); }
+
+  fieldset#\34 121.wSectionTableCSS,
+  fieldset[id="section_Contact Information"].wSectionTableCSS,
+  fieldset#section_pa.wSectionTableCSS {
+    padding: 72px 20px 28px !important;
+    border-radius: var(--radius-md) !important;
+  }
+  fieldset#section_cc.wSectionTableCSS,
+  fieldset[id="section_Billing Address"].wSectionTableCSS {
+    padding: 20px !important;
+    border-radius: 0 !important;
+  }
+  fieldset[id="section_Billing Address"].wSectionTableCSS {
+    border-bottom-left-radius: var(--radius-md) !important;
+    border-bottom-right-radius: var(--radius-md) !important;
+    padding-bottom: 28px !important;
+  }
+  fieldset#\34 121::before,
+  fieldset[id="section_Contact Information"]::before,
+  fieldset#section_pa::before {
+    top: 24px;
+    left: 20px;
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  fieldset#\34 121::after,
+  fieldset[id="section_Contact Information"]::after,
+  fieldset#section_pa::after {
+    top: 26px;
+    left: 64px;
+    font-size: 20px;
+    line-height: 32px;
+  }
 }
 
 @media (max-width: 640px) {
