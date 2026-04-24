@@ -176,6 +176,9 @@ body#bodyContainer {
    Step 1 = donation fieldset
    Step 2 = contact info fieldset
    Step 3 = payment method + credit card + billing address (chained as one card)
+
+   NOTE: DP renders fieldsets as DIRECT children of #pnlFields (no wrapper div),
+   so we constrain max-width on the fieldsets themselves.
 */
 fieldset#\34 121.wSectionTableCSS,
 fieldset[id="section_Contact Information"].wSectionTableCSS,
@@ -185,12 +188,15 @@ fieldset#section_pa.wSectionTableCSS {
   border-radius: var(--radius-lg) !important;
   padding: 88px 48px 48px !important;
   box-shadow: var(--shadow-lg) !important;
-  margin: 0 0 24px !important;
+  margin: 0 auto 24px !important;
+  max-width: 720px !important;
   position: relative !important;
 }
 
-/* Step 3: section_pa opens the card; cc and billing chain underneath. */
+/* Step 3: section_pa opens the card; cc and billing chain underneath.
+   No bottom border on pa or cc so the chained fieldsets read as one card. */
 fieldset#section_pa.wSectionTableCSS {
+  border-bottom: none !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
   margin-bottom: 0 !important;
@@ -202,25 +208,34 @@ fieldset[id="section_Billing Address"].wSectionTableCSS {
   border: 1px solid var(--hairline) !important;
   border-top: none !important;
   border-radius: 0 !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
+  max-width: 720px !important;
   padding: 24px 48px !important;
   box-shadow: var(--shadow-lg) !important;
   position: relative !important;
+}
+fieldset#section_cc.wSectionTableCSS {
+  border-bottom: none !important;
 }
 fieldset[id="section_Billing Address"].wSectionTableCSS {
   border-bottom-left-radius: var(--radius-lg) !important;
   border-bottom-right-radius: var(--radius-lg) !important;
   padding-bottom: 48px !important;
-  margin-bottom: 24px !important;
+  margin: 0 auto 24px !important;
 }
 
 /* Step header: show the <legend> as a flex row holding badge + title.
    (Switched from fieldset::before/::after because ::after on <fieldset>
    renders unreliably across browsers. Pseudo-elements on <legend> are
-   reliable everywhere.) */
-fieldset#\34 121 > legend,
-fieldset[id="section_Contact Information"] > legend,
-fieldset#section_pa > legend {
+   reliable everywhere.)
+
+   NOTE: .wSectionTableCSS is added to all three selectors to bump specificity
+   above the global `fieldset.wSectionTableCSS > legend { display:none }` rule
+   that lives further down in this file. Without it, the attribute-selector
+   variant for Contact Information ties on specificity and loses the cascade. */
+fieldset#\34 121.wSectionTableCSS > legend,
+fieldset[id="section_Contact Information"].wSectionTableCSS > legend,
+fieldset#section_pa.wSectionTableCSS > legend {
   display: flex !important;
   align-items: center !important;
   gap: 16px !important;
@@ -240,13 +255,13 @@ fieldset#section_pa > legend {
 }
 
 /* Numbered badge (inside the legend) */
-fieldset#\34 121 > legend::before { content: "01" !important; }
-fieldset[id="section_Contact Information"] > legend::before { content: "02" !important; }
-fieldset#section_pa > legend::before { content: "03" !important; }
+fieldset#\34 121.wSectionTableCSS > legend::before { content: "01" !important; }
+fieldset[id="section_Contact Information"].wSectionTableCSS > legend::before { content: "02" !important; }
+fieldset#section_pa.wSectionTableCSS > legend::before { content: "03" !important; }
 
-fieldset#\34 121 > legend::before,
-fieldset[id="section_Contact Information"] > legend::before,
-fieldset#section_pa > legend::before {
+fieldset#\34 121.wSectionTableCSS > legend::before,
+fieldset[id="section_Contact Information"].wSectionTableCSS > legend::before,
+fieldset#section_pa.wSectionTableCSS > legend::before {
   flex: 0 0 auto !important;
   width: 40px !important;
   height: 40px !important;
@@ -264,13 +279,13 @@ fieldset#section_pa > legend::before {
 }
 
 /* Step title (inside the legend, next to the badge) */
-fieldset#\34 121 > legend::after { content: "Your gift" !important; }
-fieldset[id="section_Contact Information"] > legend::after { content: "About you" !important; }
-fieldset#section_pa > legend::after { content: "Payment" !important; }
+fieldset#\34 121.wSectionTableCSS > legend::after { content: "Your gift" !important; }
+fieldset[id="section_Contact Information"].wSectionTableCSS > legend::after { content: "About you" !important; }
+fieldset#section_pa.wSectionTableCSS > legend::after { content: "Payment" !important; }
 
-fieldset#\34 121 > legend::after,
-fieldset[id="section_Contact Information"] > legend::after,
-fieldset#section_pa > legend::after {
+fieldset#\34 121.wSectionTableCSS > legend::after,
+fieldset[id="section_Contact Information"].wSectionTableCSS > legend::after,
+fieldset#section_pa.wSectionTableCSS > legend::after {
   font-family: 'Fraunces', Georgia, serif !important;
   font-size: 26px !important;
   font-weight: 500 !important;
@@ -399,10 +414,13 @@ fieldset.wSectionTableCSS > legend {
 .form-inline.label-up {
   margin-bottom: 18px !important;
   display: block !important;
+  border: none !important;  /* kill any DP-applied dividers */
 }
 .form-inline.label-up .form-group {
   width: 100% !important;
   margin-bottom: 0 !important;
+  border: none !important;  /* kill any DP-applied dividers */
+  position: relative !important;  /* anchor for the absolute REQUIRED indicator */
 }
 .form-inline.label-up .form-group > label {
   display: block !important;
@@ -413,24 +431,87 @@ fieldset.wSectionTableCSS > legend {
   margin-bottom: 6px !important;
   line-height: 1.4;
 }
-/* Required asterisk styling */
+/* Required asterisk → "REQUIRED" pin in the top-right of each field */
 .glyphicon-asterisk.form-control-feedback {
   color: var(--maroon) !important;
-  font-size: 8px !important;
+  font-size: 0 !important;        /* hide DP's asterisk glyph */
   font-family: sans-serif !important;
-  position: static !important;
-  float: right !important;
-  margin-top: 4px !important;
-  margin-left: 8px !important;
-  display: inline-block !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  background: none !important;
+  z-index: 1 !important;
 }
 .glyphicon-asterisk.form-control-feedback::before {
   content: "required" !important;
-  font-size: 11px !important;
-  font-weight: 500 !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
   color: var(--maroon) !important;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  line-height: 1.4 !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* ---------- Side-by-side field layouts (City/State/Zip, First/Last, Home/Cell) ---------- */
+/* DP wraps each field in its own .form-inline.label-up. We use :has() to put
+   specific groups on the same row. Modern browsers (2023+) support this. */
+.form-inline.label-up:has(> [Level="Field_first_name"]),
+.form-inline.label-up:has(> [Level="Field_last_name"]),
+.form-inline.label-up:has(> [Level="Field_home_phone"]),
+.form-inline.label-up:has(> [Level="Field_mobile_phone"]),
+.form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
+.form-inline.label-up:has(> [Level="Field_CVV2"]) {
+  display: inline-block !important;
+  width: calc(50% - 6px) !important;
+  vertical-align: top !important;
+}
+.form-inline.label-up:has(> [Level="Field_first_name"]),
+.form-inline.label-up:has(> [Level="Field_home_phone"]),
+.form-inline.label-up:has(> [Level="Field_ExpirationDate"]) {
+  margin-right: 12px !important;
+}
+.form-inline.label-up:has(> [Level="Field_city"]) {
+  display: inline-block !important;
+  width: calc(50% - 8px) !important;
+  margin-right: 12px !important;
+  vertical-align: top !important;
+}
+.form-inline.label-up:has(> [Level="Field_state"]),
+.form-inline.label-up:has(> [Level="Field_State"]) {
+  display: inline-block !important;
+  width: calc(20% - 4px) !important;
+  margin-right: 12px !important;
+  vertical-align: top !important;
+}
+.form-inline.label-up:has(> [Level="Field_zip"]),
+.form-inline.label-up:has(> [Level="Field_Zip"]) {
+  display: inline-block !important;
+  width: calc(30% - 4px) !important;
+  vertical-align: top !important;
+}
+/* Billing address city/state/zip use different field IDs in DP */
+.form-inline.label-up:has(> [Level="Field_CardHolderCity"]) {
+  display: inline-block !important;
+  width: calc(50% - 8px) !important;
+  margin-right: 12px !important;
+  vertical-align: top !important;
+}
+.form-inline.label-up:has(> [Level="Field_CardHolderState"]) {
+  display: inline-block !important;
+  width: calc(20% - 4px) !important;
+  margin-right: 12px !important;
+  vertical-align: top !important;
+}
+.form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
+  display: inline-block !important;
+  width: calc(30% - 4px) !important;
+  vertical-align: top !important;
 }
 
 /* ---------- Inputs, selects, textareas ---------- */
@@ -589,7 +670,8 @@ label.btn.btn-primary.col-xs-12.other-amount {
 }
 
 /* ---------- STEP 1: Donation type toggle (One-Time / Recurring) ---------- */
-#Part\|4121\|giftPledgeType\|\|N\|giftPledgeType_pnlRblGiftPledge > .form-group {
+/* Use attribute selector to avoid CSS escaping issues with pipe characters in the ID. */
+[id="Part|4121|giftPledgeType||N|giftPledgeType_pnlRblGiftPledge"] > .form-group {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 0 !important;
@@ -624,8 +706,10 @@ label.control.radio .control-indicator { display: none !important; }
 label.control.radio > span:last-child {
   color: inherit !important;
 }
-/* Active state for selected radio */
-label.control.radio.aaple-selected {
+/* Active state for selected radio.
+   Without JS we rely on the radio's :checked state via :has(). */
+label.control.radio.aaple-selected,
+label.control.radio:has(input[type="radio"]:checked) {
   background: var(--ink) !important;
   color: #fff !important;
 }
@@ -989,26 +1073,44 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
     border-bottom-right-radius: var(--radius-md) !important;
     padding-bottom: 28px !important;
   }
-  fieldset#\34 121 > legend,
-  fieldset[id="section_Contact Information"] > legend,
-  fieldset#section_pa > legend {
+  fieldset#\34 121.wSectionTableCSS > legend,
+  fieldset[id="section_Contact Information"].wSectionTableCSS > legend,
+  fieldset#section_pa.wSectionTableCSS > legend {
     top: 24px !important;
     left: 20px !important;
     right: 20px !important;
     gap: 12px !important;
   }
-  fieldset#\34 121 > legend::before,
-  fieldset[id="section_Contact Information"] > legend::before,
-  fieldset#section_pa > legend::before {
+  fieldset#\34 121.wSectionTableCSS > legend::before,
+  fieldset[id="section_Contact Information"].wSectionTableCSS > legend::before,
+  fieldset#section_pa.wSectionTableCSS > legend::before {
     width: 32px !important;
     height: 32px !important;
     font-size: 12px !important;
   }
-  fieldset#\34 121 > legend::after,
-  fieldset[id="section_Contact Information"] > legend::after,
-  fieldset#section_pa > legend::after {
+  fieldset#\34 121.wSectionTableCSS > legend::after,
+  fieldset[id="section_Contact Information"].wSectionTableCSS > legend::after,
+  fieldset#section_pa.wSectionTableCSS > legend::after {
     font-size: 20px !important;
     line-height: 32px !important;
+  }
+
+  /* On mobile, side-by-side fields stack back to full width */
+  .form-inline.label-up:has(> [Level="Field_first_name"]),
+  .form-inline.label-up:has(> [Level="Field_last_name"]),
+  .form-inline.label-up:has(> [Level="Field_home_phone"]),
+  .form-inline.label-up:has(> [Level="Field_mobile_phone"]),
+  .form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
+  .form-inline.label-up:has(> [Level="Field_CVV2"]),
+  .form-inline.label-up:has(> [Level="Field_city"]),
+  .form-inline.label-up:has(> [Level="Field_state"]),
+  .form-inline.label-up:has(> [Level="Field_zip"]),
+  .form-inline.label-up:has(> [Level="Field_CardHolderCity"]),
+  .form-inline.label-up:has(> [Level="Field_CardHolderState"]),
+  .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
+    display: block !important;
+    width: 100% !important;
+    margin-right: 0 !important;
   }
 }
 
