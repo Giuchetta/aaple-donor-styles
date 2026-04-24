@@ -214,48 +214,70 @@ fieldset[id="section_Billing Address"].wSectionTableCSS {
   margin-bottom: 24px !important;
 }
 
-/* Numbered badges */
-fieldset#\34 121::before { content: "01"; }
-fieldset[id="section_Contact Information"]::before { content: "02"; }
-fieldset#section_pa::before { content: "03"; }
-
-fieldset#\34 121::before,
-fieldset[id="section_Contact Information"]::before,
-fieldset#section_pa::before {
-  position: absolute;
-  top: 36px;
-  left: 36px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--maroon);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.05em;
-  box-shadow: 0 0 0 4px var(--maroon-soft);
+/* Step header: show the <legend> as a flex row holding badge + title.
+   (Switched from fieldset::before/::after because ::after on <fieldset>
+   renders unreliably across browsers. Pseudo-elements on <legend> are
+   reliable everywhere.) */
+fieldset#\34 121 > legend,
+fieldset[id="section_Contact Information"] > legend,
+fieldset#section_pa > legend {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  position: absolute !important;
+  top: 32px !important;
+  left: 32px !important;
+  right: 32px !important;
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  /* Hide the original legend text (Donation Information / Contact Information / etc) */
+  font-size: 0 !important;
+  color: transparent !important;
+  line-height: 0 !important;
 }
 
-/* Step titles */
-fieldset#\34 121::after { content: "Your gift"; }
-fieldset[id="section_Contact Information"]::after { content: "About you"; }
-fieldset#section_pa::after { content: "Payment"; }
+/* Numbered badge (inside the legend) */
+fieldset#\34 121 > legend::before { content: "01" !important; }
+fieldset[id="section_Contact Information"] > legend::before { content: "02" !important; }
+fieldset#section_pa > legend::before { content: "03" !important; }
 
-fieldset#\34 121::after,
-fieldset[id="section_Contact Information"]::after,
-fieldset#section_pa::after {
-  position: absolute;
-  top: 36px;
-  left: 92px;
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 26px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 40px;
-  letter-spacing: -0.01em;
+fieldset#\34 121 > legend::before,
+fieldset[id="section_Contact Information"] > legend::before,
+fieldset#section_pa > legend::before {
+  flex: 0 0 auto !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: var(--maroon) !important;
+  color: #fff !important;
+  display: grid !important;
+  place-items: center !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1 !important;
+  box-shadow: 0 0 0 4px var(--maroon-soft) !important;
+}
+
+/* Step title (inside the legend, next to the badge) */
+fieldset#\34 121 > legend::after { content: "Your gift" !important; }
+fieldset[id="section_Contact Information"] > legend::after { content: "About you" !important; }
+fieldset#section_pa > legend::after { content: "Payment" !important; }
+
+fieldset#\34 121 > legend::after,
+fieldset[id="section_Contact Information"] > legend::after,
+fieldset#section_pa > legend::after {
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  color: var(--ink) !important;
+  line-height: 40px !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
 }
 
 /* ---------- Progress indicator (injected by JS) ---------- */
@@ -967,22 +989,26 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
     border-bottom-right-radius: var(--radius-md) !important;
     padding-bottom: 28px !important;
   }
-  fieldset#\34 121::before,
-  fieldset[id="section_Contact Information"]::before,
-  fieldset#section_pa::before {
-    top: 24px;
-    left: 20px;
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
+  fieldset#\34 121 > legend,
+  fieldset[id="section_Contact Information"] > legend,
+  fieldset#section_pa > legend {
+    top: 24px !important;
+    left: 20px !important;
+    right: 20px !important;
+    gap: 12px !important;
   }
-  fieldset#\34 121::after,
-  fieldset[id="section_Contact Information"]::after,
-  fieldset#section_pa::after {
-    top: 26px;
-    left: 64px;
-    font-size: 20px;
-    line-height: 32px;
+  fieldset#\34 121 > legend::before,
+  fieldset[id="section_Contact Information"] > legend::before,
+  fieldset#section_pa > legend::before {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 12px !important;
+  }
+  fieldset#\34 121 > legend::after,
+  fieldset[id="section_Contact Information"] > legend::after,
+  fieldset#section_pa > legend::after {
+    font-size: 20px !important;
+    line-height: 32px !important;
   }
 }
 
