@@ -431,87 +431,69 @@ fieldset.wSectionTableCSS > legend {
   margin-bottom: 6px !important;
   line-height: 1.4;
 }
-/* Required asterisk → "REQUIRED" pin in the top-right of each field */
+/* Required indicator: hide DP's asterisk div, render "required" inline
+   at the end of the label text. This guarantees no overlap on narrow fields
+   (State/Zip) and gives consistent baseline alignment across rows. */
 .glyphicon-asterisk.form-control-feedback {
-  color: var(--maroon) !important;
-  font-size: 0 !important;        /* hide DP's asterisk glyph */
-  font-family: sans-serif !important;
-  position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-  width: auto !important;
-  height: auto !important;
-  background: none !important;
-  z-index: 1 !important;
+  display: none !important;
 }
-.glyphicon-asterisk.form-control-feedback::before {
-  content: "required" !important;
-  font-size: 10px !important;
-  font-weight: 600 !important;
+.form-inline.label-up .form-group:has(> .glyphicon-asterisk.form-control-feedback) > label::after {
+  content: " required" !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
   color: var(--maroon) !important;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1.4 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  margin-left: 8px !important;
+  vertical-align: 1px !important;
   font-family: 'DM Sans', sans-serif !important;
 }
 
-/* ---------- Side-by-side field layouts (City/State/Zip, First/Last, Home/Cell) ---------- */
-/* DP wraps each field in its own .form-inline.label-up. We use :has() to put
-   specific groups on the same row. Modern browsers (2023+) support this. */
+/* ---------- Side-by-side field layouts via CSS Grid on the fieldset ----------
+   We grid the fieldsets that contain .form-inline.label-up children (contact,
+   credit card, billing). 20-col grid gives clean ratios:
+     full = span 20, half = span 10, quarter-ish = span 4 (20%) / span 6 (30%)
+   This eliminates inline-block whitespace gotchas and aligns side-by-side
+   fields to a common baseline. */
+fieldset[id="section_Contact Information"].wSectionTableCSS,
+fieldset#section_cc.wSectionTableCSS,
+fieldset[id="section_Billing Address"].wSectionTableCSS {
+  display: grid !important;
+  grid-template-columns: repeat(20, 1fr) !important;
+  column-gap: 12px !important;
+  row-gap: 18px !important;
+  align-items: start !important;
+}
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline,
+fieldset#section_cc.wSectionTableCSS > .form-inline,
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline {
+  grid-column: span 20 !important;
+  width: auto !important;
+  margin-bottom: 0 !important;  /* grid row-gap handles spacing */
+}
+
+/* Half-width pairings */
 .form-inline.label-up:has(> [Level="Field_first_name"]),
 .form-inline.label-up:has(> [Level="Field_last_name"]),
 .form-inline.label-up:has(> [Level="Field_home_phone"]),
 .form-inline.label-up:has(> [Level="Field_mobile_phone"]),
 .form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
 .form-inline.label-up:has(> [Level="Field_CVV2"]) {
-  display: inline-block !important;
-  width: calc(50% - 6px) !important;
-  vertical-align: top !important;
+  grid-column: span 10 !important;
 }
-.form-inline.label-up:has(> [Level="Field_first_name"]),
-.form-inline.label-up:has(> [Level="Field_home_phone"]),
-.form-inline.label-up:has(> [Level="Field_ExpirationDate"]) {
-  margin-right: 12px !important;
-}
-.form-inline.label-up:has(> [Level="Field_city"]) {
-  display: inline-block !important;
-  width: calc(50% - 8px) !important;
-  margin-right: 12px !important;
-  vertical-align: top !important;
+
+/* City + State + Zip = 50/20/30 (= span 10 / 4 / 6) */
+.form-inline.label-up:has(> [Level="Field_city"]),
+.form-inline.label-up:has(> [Level="Field_CardHolderCity"]) {
+  grid-column: span 10 !important;
 }
 .form-inline.label-up:has(> [Level="Field_state"]),
-.form-inline.label-up:has(> [Level="Field_State"]) {
-  display: inline-block !important;
-  width: calc(20% - 4px) !important;
-  margin-right: 12px !important;
-  vertical-align: top !important;
+.form-inline.label-up:has(> [Level="Field_CardHolderState"]) {
+  grid-column: span 4 !important;
 }
 .form-inline.label-up:has(> [Level="Field_zip"]),
-.form-inline.label-up:has(> [Level="Field_Zip"]) {
-  display: inline-block !important;
-  width: calc(30% - 4px) !important;
-  vertical-align: top !important;
-}
-/* Billing address city/state/zip use different field IDs in DP */
-.form-inline.label-up:has(> [Level="Field_CardHolderCity"]) {
-  display: inline-block !important;
-  width: calc(50% - 8px) !important;
-  margin-right: 12px !important;
-  vertical-align: top !important;
-}
-.form-inline.label-up:has(> [Level="Field_CardHolderState"]) {
-  display: inline-block !important;
-  width: calc(20% - 4px) !important;
-  margin-right: 12px !important;
-  vertical-align: top !important;
-}
 .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
-  display: inline-block !important;
-  width: calc(30% - 4px) !important;
-  vertical-align: top !important;
+  grid-column: span 6 !important;
 }
 
 /* ---------- Inputs, selects, textareas ---------- */
@@ -545,15 +527,21 @@ select.form-control {
   padding-right: 40px !important;
 }
 
-/* Inline expiration month/year */
+/* Inline expiration month/year — DP wraps the two selects in a div panel,
+   so flex the panel and let each select grow equally. */
+[Level="Field_ExpirationDate"] > div {
+  display: flex !important;
+  gap: 10px !important;
+}
+[Level="Field_ExpirationDate"] > div > select {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+/* Legacy rule kept for any other place DP uses this class */
 select.form-control-inline {
   display: inline-block !important;
   width: calc(50% - 5px) !important;
-  margin-right: 5px !important;
-}
-select.form-control-inline + select.form-control-inline {
-  margin-right: 0 !important;
-  margin-left: 5px !important;
 }
 
 /* Invalid field styling */
@@ -642,9 +630,23 @@ select.form-control-inline + select.form-control-inline {
   cursor: pointer !important;
 }
 
-/* The "Other" amount option (last one with text input) */
+/* The "Other" amount option (last one with text input).
+   De-emphasized with a dashed border + transparent background so it
+   doesn't visually compete with the real preset amounts. */
 label.btn.btn-primary.col-xs-12.other-amount {
   grid-column: span 2 !important;
+  border-style: dashed !important;
+  background: transparent !important;
+  min-height: 48px !important;
+  color: var(--muted) !important;
+}
+label.btn.btn-primary.col-xs-12.other-amount:hover {
+  border-color: var(--maroon) !important;
+  color: var(--ink) !important;
+  background: transparent !important;
+}
+label.btn.btn-primary.col-xs-12.other-amount.active {
+  border-style: solid !important;
 }
 .otherAmountText.other-amount-long-text {
   width: 100% !important;
@@ -748,7 +750,11 @@ label.control.checkbox input[type="checkbox"] {
 }
 label.control.checkbox .control-indicator { display: none !important; }
 
-/* ---------- Hide DP's original Next button (we replace with our own) ---------- */
+/* ---------- Hide unused DP wrapper blocks that produce white bands ----------
+   These elements are rendered by DP between our sections (pnlHeader → pnlFields → pnlFooter)
+   and show up as visible empty/white horizontal bands. */
+#pnlEpay,
+#pnlShare,
 #pnlLinks,
 #btnConfirm12345 {
   display: none !important;
@@ -1095,7 +1101,10 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
     line-height: 32px !important;
   }
 
-  /* On mobile, side-by-side fields stack back to full width */
+  /* On mobile, every field spans full width (regardless of grid hints above) */
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline,
+  fieldset#section_cc.wSectionTableCSS > .form-inline,
+  fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline,
   .form-inline.label-up:has(> [Level="Field_first_name"]),
   .form-inline.label-up:has(> [Level="Field_last_name"]),
   .form-inline.label-up:has(> [Level="Field_home_phone"]),
@@ -1108,9 +1117,7 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
   .form-inline.label-up:has(> [Level="Field_CardHolderCity"]),
   .form-inline.label-up:has(> [Level="Field_CardHolderState"]),
   .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
-    display: block !important;
-    width: 100% !important;
-    margin-right: 0 !important;
+    grid-column: span 20 !important;
   }
 }
 
