@@ -450,9 +450,7 @@ fieldset.wSectionTableCSS > legend {
 }
 
 /* Shorten the "State/Province" label to just "State" on the narrow 20%
-   field so the label + " required" fit on one line. Without this, the
-   label wraps to 2 lines and the State dropdown sits below City/Zip.
-   Selector specificity is bumped to outrank the generic label rule above. */
+   field — keeps the label readable even when it does fit on one line. */
 .form-inline.label-up .form-group[Level="Field_state"] > label,
 .form-inline.label-up .form-group[Level="Field_CardHolderState"] > label {
   font-size: 0 !important;
@@ -465,6 +463,25 @@ fieldset.wSectionTableCSS > legend {
   color: var(--ink) !important;
   font-family: 'DM Sans', sans-serif !important;
   line-height: 1.4 !important;
+}
+
+/* Force all labels in side-by-side rows to reserve the same vertical
+   space (~2 lines of label text) so the inputs below them always start
+   at the same Y position, even when one label wraps. This is the real
+   fix for top-aligning the input fields across a row. */
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_first_name"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_last_name"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_home_phone"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_mobile_phone"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_city"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_state"]) > .form-group > label,
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_zip"]) > .form-group > label,
+fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_ExpirationDate"]) > .form-group > label,
+fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_CVV2"]) > .form-group > label,
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderCity"]) > .form-group > label,
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderState"]) > .form-group > label,
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderZip"]) > .form-group > label {
+  min-height: 36px !important;
 }
 
 /* ---------- Side-by-side field layouts via inline-block ----------
