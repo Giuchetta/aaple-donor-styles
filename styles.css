@@ -449,51 +449,56 @@ fieldset.wSectionTableCSS > legend {
   font-family: 'DM Sans', sans-serif !important;
 }
 
-/* ---------- Side-by-side field layouts via CSS Grid on the fieldset ----------
-   We grid the fieldsets that contain .form-inline.label-up children (contact,
-   credit card, billing). 20-col grid gives clean ratios:
-     full = span 20, half = span 10, quarter-ish = span 4 (20%) / span 6 (30%)
-   This eliminates inline-block whitespace gotchas and aligns side-by-side
-   fields to a common baseline. */
+/* ---------- Side-by-side field layouts via inline-block ----------
+   Note: we tried `display: grid` on the <fieldset> first, but Chrome only
+   honors that on fieldset since v110 and behavior is inconsistent. inline-block
+   is the universal fallback. We zero out the fieldset's font-size to kill
+   inline-block whitespace, then restore it on each .form-inline. */
 fieldset[id="section_Contact Information"].wSectionTableCSS,
 fieldset#section_cc.wSectionTableCSS,
 fieldset[id="section_Billing Address"].wSectionTableCSS {
-  display: grid !important;
-  grid-template-columns: repeat(20, 1fr) !important;
-  column-gap: 12px !important;
-  row-gap: 18px !important;
-  align-items: start !important;
+  font-size: 0 !important;  /* kill inline-block whitespace between rows */
 }
 fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline,
 fieldset#section_cc.wSectionTableCSS > .form-inline,
 fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline {
-  grid-column: span 20 !important;
-  width: auto !important;
-  margin-bottom: 0 !important;  /* grid row-gap handles spacing */
+  display: inline-block !important;
+  vertical-align: top !important;
+  width: 100% !important;
+  font-size: 17px !important;          /* restore font for content */
+  margin-bottom: 18px !important;
+  box-sizing: border-box !important;
 }
 
-/* Half-width pairings */
+/* 50/50 pairings: First/Last, Home/Cell, Expiration/CVV */
 .form-inline.label-up:has(> [Level="Field_first_name"]),
 .form-inline.label-up:has(> [Level="Field_last_name"]),
 .form-inline.label-up:has(> [Level="Field_home_phone"]),
 .form-inline.label-up:has(> [Level="Field_mobile_phone"]),
 .form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
 .form-inline.label-up:has(> [Level="Field_CVV2"]) {
-  grid-column: span 10 !important;
+  width: calc(50% - 6px) !important;
+}
+.form-inline.label-up:has(> [Level="Field_first_name"]),
+.form-inline.label-up:has(> [Level="Field_home_phone"]),
+.form-inline.label-up:has(> [Level="Field_ExpirationDate"]) {
+  margin-right: 12px !important;
 }
 
-/* City + State + Zip = 50/20/30 (= span 10 / 4 / 6) */
+/* City (50) + State (20) + Zip (30) — totals 100% with two 8px gaps */
 .form-inline.label-up:has(> [Level="Field_city"]),
 .form-inline.label-up:has(> [Level="Field_CardHolderCity"]) {
-  grid-column: span 10 !important;
+  width: calc(50% - 8px) !important;
+  margin-right: 8px !important;
 }
 .form-inline.label-up:has(> [Level="Field_state"]),
 .form-inline.label-up:has(> [Level="Field_CardHolderState"]) {
-  grid-column: span 4 !important;
+  width: calc(20% - 8px) !important;
+  margin-right: 8px !important;
 }
 .form-inline.label-up:has(> [Level="Field_zip"]),
 .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
-  grid-column: span 6 !important;
+  width: 30% !important;
 }
 
 /* ---------- Inputs, selects, textareas ---------- */
@@ -565,28 +570,29 @@ select.form-control-inline {
   display: contents !important;
 }
 
-/* Each amount option (DP wraps these in label.btn.btn-primary.col-xs-12) */
+/* Each amount option (DP wraps these in label.btn.btn-primary.col-xs-12).
+   Tighter height, bigger font, flex-centered both axes. */
 .btn-group[data-toggle="buttons"] label.btn.btn-primary {
-  display: block !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 100% !important;
-  padding: 0 !important;
+  min-height: 52px !important;
+  padding: 12px 20px !important;
   margin: 0 !important;
   background: #fff !important;
   border: 1.5px solid var(--hairline) !important;
   border-radius: var(--radius-pill) !important;
   color: var(--ink) !important;
-  font-weight: 600 !important;
   font-family: 'DM Sans', sans-serif !important;
-  font-size: 15px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 1.3 !important;
   text-align: center !important;
   cursor: pointer !important;
   transition: all 0.18s ease !important;
   box-shadow: none !important;
   float: none !important;
-  min-height: 60px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 .btn-group[data-toggle="buttons"] label.btn.btn-primary:hover {
   border-color: var(--maroon) !important;
@@ -610,14 +616,14 @@ select.form-control-inline {
   pointer-events: none !important;
 }
 
-/* Amount wrapper inside each pill */
+/* Amount wrapper inside each pill — strip nested padding; the pill handles it. */
 .amount-wrapper.remove-set-width,
 .amounts-left.long-text {
   display: block !important;
   width: 100% !important;
-  padding: 14px 16px !important;
-  text-align: center !important;
+  padding: 0 !important;
   margin: 0 !important;
+  text-align: center !important;
 }
 .amount-radio-option.wrapping-text {
   color: inherit !important;
@@ -727,8 +733,8 @@ label.control.radio:has(input[type="radio"]:checked) {
 label.control.checkbox {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  padding: 14px 16px !important;
+  gap: 14px !important;
+  padding: 14px 18px !important;
   background: var(--cream) !important;
   border: 1px solid var(--hairline) !important;
   border-radius: var(--radius-md) !important;
@@ -744,20 +750,72 @@ label.control.checkbox input[type="checkbox"] {
   height: 18px !important;
   accent-color: var(--maroon) !important;
   cursor: pointer !important;
-  margin: 0 !important;
+  margin: 0 12px 0 0 !important;   /* explicit space between box and label text */
   position: static !important;
   opacity: 1 !important;
+  flex-shrink: 0 !important;
 }
 label.control.checkbox .control-indicator { display: none !important; }
 
-/* ---------- Hide unused DP wrapper blocks that produce white bands ----------
-   These elements are rendered by DP between our sections (pnlHeader → pnlFields → pnlFooter)
-   and show up as visible empty/white horizontal bands. */
+/* ---------- Hide unused DP wrapper blocks that produce white bands ---------- */
 #pnlEpay,
-#pnlShare,
-#pnlLinks,
-#btnConfirm12345 {
+#pnlShare {
   display: none !important;
+}
+
+/* ---------- Submit button: show + restyle DP's own button ----------
+   DP renders the submit as: <a id="btnConfirm12345"> Next <i class='fa fa-arrow-right'></i></a>
+   We hide the original "Next" text via font-size:0 and inject our own copy
+   via ::before, then restore size on the icon so it still renders. */
+#pnlLinks {
+  display: block !important;
+  max-width: 720px !important;
+  margin: 8px auto 32px !important;
+  padding: 0 24px !important;
+}
+#pnlLinks .button-bar {
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+#btnConfirm12345 {
+  display: block !important;
+  width: 100% !important;
+  background: var(--maroon) !important;
+  color: #fff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0 !important;            /* hide the bare "Next" text node */
+  padding: 18px 24px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(139,46,46,0.25) !important;
+  transition: background 0.15s ease !important;
+  cursor: pointer !important;
+  line-height: 1.2 !important;
+}
+#btnConfirm12345:hover,
+#btnConfirm12345:focus {
+  background: var(--maroon-deep) !important;
+  text-decoration: none !important;
+  color: #fff !important;
+}
+#btnConfirm12345:active { transform: translateY(1px); }
+#btnConfirm12345::before {
+  content: "Complete my donation" !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  margin-right: 10px !important;
+  vertical-align: middle !important;
+}
+#btnConfirm12345 i.fa-arrow-right {
+  font-size: 14px !important;        /* restore icon (parent has font-size:0) */
+  vertical-align: middle !important;
 }
 
 /* ---------- Our Navigation buttons (injected by JS) ---------- */
@@ -1101,7 +1159,7 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
     line-height: 32px !important;
   }
 
-  /* On mobile, every field spans full width (regardless of grid hints above) */
+  /* On mobile, every field collapses back to full width */
   fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline,
   fieldset#section_cc.wSectionTableCSS > .form-inline,
   fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline,
@@ -1117,7 +1175,8 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
   .form-inline.label-up:has(> [Level="Field_CardHolderCity"]),
   .form-inline.label-up:has(> [Level="Field_CardHolderState"]),
   .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
-    grid-column: span 20 !important;
+    width: 100% !important;
+    margin-right: 0 !important;
   }
 }
 
