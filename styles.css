@@ -449,6 +449,24 @@ fieldset.wSectionTableCSS > legend {
   font-family: 'DM Sans', sans-serif !important;
 }
 
+/* Shorten the "State/Province" label to just "State" on the narrow 20%
+   field so the label + " required" fit on one line. Without this, the
+   label wraps to 2 lines and the State dropdown sits below City/Zip.
+   Selector specificity is bumped to outrank the generic label rule above. */
+.form-inline.label-up .form-group[Level="Field_state"] > label,
+.form-inline.label-up .form-group[Level="Field_CardHolderState"] > label {
+  font-size: 0 !important;
+}
+.form-inline.label-up .form-group[Level="Field_state"] > label::before,
+.form-inline.label-up .form-group[Level="Field_CardHolderState"] > label::before {
+  content: "State" !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  line-height: 1.4 !important;
+}
+
 /* ---------- Side-by-side field layouts via inline-block ----------
    Note: we tried `display: grid` on the <fieldset> first, but Chrome only
    honors that on fieldset since v110 and behavior is inconsistent. inline-block
@@ -768,15 +786,22 @@ label.control.checkbox .control-indicator { display: none !important; }
 /* ---------- Submit button: show + restyle DP's own button ----------
    DP renders the submit as: <a id="btnConfirm12345"> Next <i class='fa fa-arrow-right'></i></a>
    We hide the original "Next" text via font-size:0 and inject our own copy
-   via ::before, then restore size on the icon so it still renders. */
+   via ::before, then restore size on the icon so it still renders.
+
+   pnlLinks gets the same cream-2 background as #pnlFields so the button
+   reads as part of the form section instead of a white band between sections. */
 #pnlLinks {
   display: block !important;
-  max-width: 720px !important;
-  margin: 8px auto 32px !important;
-  padding: 0 24px !important;
+  background: var(--cream-2) !important;
+  margin: 0 !important;
+  padding: 0 24px 60px !important;
+  width: 100% !important;
+  max-width: none !important;
+  text-align: center !important;
 }
 #pnlLinks .button-bar {
-  text-align: center !important;
+  max-width: 720px !important;
+  margin: 0 auto !important;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
