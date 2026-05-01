@@ -470,34 +470,36 @@ fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline {
   box-sizing: border-box !important;
 }
 
-/* 50/50 pairings: First/Last, Home/Cell, Expiration/CVV */
-.form-inline.label-up:has(> [Level="Field_first_name"]),
-.form-inline.label-up:has(> [Level="Field_last_name"]),
-.form-inline.label-up:has(> [Level="Field_home_phone"]),
-.form-inline.label-up:has(> [Level="Field_mobile_phone"]),
-.form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
-.form-inline.label-up:has(> [Level="Field_CVV2"]) {
+/* 50/50 pairings: First/Last, Home/Cell, Expiration/CVV.
+   Selectors are anchored to the parent fieldset to outrank the
+   `> .form-inline { width: 100% }` default rule above. */
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_first_name"]),
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_last_name"]),
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_home_phone"]),
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_mobile_phone"]),
+fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_ExpirationDate"]),
+fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_CVV2"]) {
   width: calc(50% - 6px) !important;
 }
-.form-inline.label-up:has(> [Level="Field_first_name"]),
-.form-inline.label-up:has(> [Level="Field_home_phone"]),
-.form-inline.label-up:has(> [Level="Field_ExpirationDate"]) {
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_first_name"]),
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_home_phone"]),
+fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_ExpirationDate"]) {
   margin-right: 12px !important;
 }
 
 /* City (50) + State (20) + Zip (30) — totals 100% with two 8px gaps */
-.form-inline.label-up:has(> [Level="Field_city"]),
-.form-inline.label-up:has(> [Level="Field_CardHolderCity"]) {
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_city"]),
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderCity"]) {
   width: calc(50% - 8px) !important;
   margin-right: 8px !important;
 }
-.form-inline.label-up:has(> [Level="Field_state"]),
-.form-inline.label-up:has(> [Level="Field_CardHolderState"]) {
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_state"]),
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderState"]) {
   width: calc(20% - 8px) !important;
   margin-right: 8px !important;
 }
-.form-inline.label-up:has(> [Level="Field_zip"]),
-.form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
+fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_zip"]),
+fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderZip"]) {
   width: 30% !important;
 }
 
@@ -1159,22 +1161,23 @@ body > div[style*="vertical-align:bottom"] > div:last-child {
     line-height: 32px !important;
   }
 
-  /* On mobile, every field collapses back to full width */
+  /* On mobile, every field collapses back to full width — same anchored
+     selectors as desktop to win the cascade. */
   fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline,
   fieldset#section_cc.wSectionTableCSS > .form-inline,
   fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline,
-  .form-inline.label-up:has(> [Level="Field_first_name"]),
-  .form-inline.label-up:has(> [Level="Field_last_name"]),
-  .form-inline.label-up:has(> [Level="Field_home_phone"]),
-  .form-inline.label-up:has(> [Level="Field_mobile_phone"]),
-  .form-inline.label-up:has(> [Level="Field_ExpirationDate"]),
-  .form-inline.label-up:has(> [Level="Field_CVV2"]),
-  .form-inline.label-up:has(> [Level="Field_city"]),
-  .form-inline.label-up:has(> [Level="Field_state"]),
-  .form-inline.label-up:has(> [Level="Field_zip"]),
-  .form-inline.label-up:has(> [Level="Field_CardHolderCity"]),
-  .form-inline.label-up:has(> [Level="Field_CardHolderState"]),
-  .form-inline.label-up:has(> [Level="Field_CardHolderZip"]) {
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_first_name"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_last_name"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_home_phone"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_mobile_phone"]),
+  fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_ExpirationDate"]),
+  fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_CVV2"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_city"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_state"]),
+  fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_zip"]),
+  fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderCity"]),
+  fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderState"]),
+  fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderZip"]) {
     width: 100% !important;
     margin-right: 0 !important;
   }
