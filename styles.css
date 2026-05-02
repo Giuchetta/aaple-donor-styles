@@ -442,9 +442,9 @@ fieldset.wSectionTableCSS > legend {
   font-size: 9px !important;
   font-weight: 700 !important;
   color: var(--maroon) !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: 0.04em !important;
   text-transform: uppercase !important;
-  margin-left: 8px !important;
+  margin-left: 6px !important;
   vertical-align: 1px !important;
   font-family: 'DM Sans', sans-serif !important;
 }
@@ -465,24 +465,11 @@ fieldset.wSectionTableCSS > legend {
   line-height: 1.4 !important;
 }
 
-/* Force all labels in side-by-side rows to reserve the same vertical
-   space (~2 lines of label text) so the inputs below them always start
-   at the same Y position, even when one label wraps. This is the real
-   fix for top-aligning the input fields across a row. */
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_first_name"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_last_name"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_home_phone"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_mobile_phone"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_city"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_state"]) > .form-group > label,
-fieldset[id="section_Contact Information"].wSectionTableCSS > .form-inline:has(> [Level="Field_zip"]) > .form-group > label,
-fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_ExpirationDate"]) > .form-group > label,
-fieldset#section_cc.wSectionTableCSS > .form-inline:has(> [Level="Field_CVV2"]) > .form-group > label,
-fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderCity"]) > .form-group > label,
-fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderState"]) > .form-group > label,
-fieldset[id="section_Billing Address"].wSectionTableCSS > .form-inline:has(> [Level="Field_CardHolderZip"]) > .form-group > label {
-  min-height: 36px !important;
-}
+/* (The previous min-height:36px rule is removed. Now that "required" is
+   tighter (smaller letter-spacing + smaller margin), it fits inline on
+   the narrow State field, so labels stay one line and inputs align
+   naturally — without the extra empty space that was making spacing
+   look inconsistent across the form.) */
 
 /* ---------- Side-by-side field layouts via inline-block ----------
    Note: we tried `display: grid` on the <fieldset> first, but Chrome only
@@ -608,7 +595,9 @@ select.form-control-inline {
 }
 
 /* Each amount option (DP wraps these in label.btn.btn-primary.col-xs-12).
-   Tighter height, bigger font, flex-centered both axes. */
+   Tighter height, regular bold sans-serif, flex-centered both axes.
+   text-shadow:none kills Bootstrap 3's default `.btn-primary` embossed
+   shadow that was making the text look strange. */
 .btn-group[data-toggle="buttons"] label.btn.btn-primary {
   display: flex !important;
   align-items: center !important;
@@ -626,10 +615,15 @@ select.form-control-inline {
   font-size: 16px !important;
   line-height: 1.3 !important;
   text-align: center !important;
+  text-shadow: none !important;
   cursor: pointer !important;
   transition: all 0.18s ease !important;
   box-shadow: none !important;
   float: none !important;
+}
+.btn-group[data-toggle="buttons"] label.btn.btn-primary * {
+  text-shadow: none !important;
+  text-align: center !important;
 }
 .btn-group[data-toggle="buttons"] label.btn.btn-primary:hover {
   border-color: var(--maroon) !important;
@@ -653,22 +647,32 @@ select.form-control-inline {
   pointer-events: none !important;
 }
 
-/* Amount wrapper inside each pill — strip nested padding; the pill handles it. */
+/* Amount wrapper inside each pill — flex-center every layer so short
+   amounts ($1,950, $500) center the same way long ones do. The default
+   text-align: center alone wasn't reaching DP's nested span wrapper. */
 .amount-wrapper.remove-set-width,
 .amounts-left.long-text {
-  display: block !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 100% !important;
   padding: 0 !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+.amounts-left.long-text > span {
+  display: inline-block !important;
+  width: auto !important;
+  margin: 0 auto !important;
   text-align: center !important;
 }
 .amount-radio-option.wrapping-text {
   color: inherit !important;
   font-weight: inherit !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
   padding: 0 !important;
   font-size: inherit !important;
-  display: block !important;
+  display: inline-block !important;
   text-align: center !important;
   cursor: pointer !important;
 }
