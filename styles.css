@@ -680,21 +680,29 @@ select.form-control-inline {
 /* The "Other" amount option (last one with text input).
    Spans both columns; otherwise inherits the same look + hover state
    as the preset amount pills for visual consistency.
-   The input is absolutely positioned so it fills the entire pill —
-   this sidesteps DP's nested wrapper spans (.amount-wrapper, .amounts-left)
-   which were knocking the placeholder text off-center under flex layout. */
+
+   DP wraps the input in two nested divs (.amount-wrapper > .amounts-left)
+   and a sibling <span> that holds a hidden radio input. To center the
+   input cleanly within the pill, we:
+     1. collapse both wrapper divs with `display: contents` so the input
+        becomes a direct flex child of the <label>
+     2. hide the empty radio-holder span (its only child is positioned
+        absolute so it has no visual content anyway)
+     3. let the label's flex centering position the input, with
+        text-align: center inside the input centering the placeholder. */
 label.btn.btn-primary.col-xs-12.other-amount {
   grid-column: span 2 !important;
-  position: relative !important;
+}
+label.btn.btn-primary.col-xs-12.other-amount > .amount-wrapper.remove-set-width,
+label.btn.btn-primary.col-xs-12.other-amount > .amount-wrapper.remove-set-width > .amounts-left.long-text {
+  display: contents !important;
+}
+label.btn.btn-primary.col-xs-12.other-amount span[data-group-other] {
+  display: none !important;
 }
 .otherAmountText.other-amount-long-text {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
+  flex: 1 1 100% !important;
   width: 100% !important;
-  height: 100% !important;
   border: none !important;
   background: transparent !important;
   padding: 0 !important;
@@ -704,7 +712,6 @@ label.btn.btn-primary.col-xs-12.other-amount {
   font-size: 16px !important;
   font-weight: 700 !important;
   color: inherit !important;
-  z-index: 2 !important;
 }
 .otherAmountText.other-amount-long-text::placeholder {
   color: var(--ink);
