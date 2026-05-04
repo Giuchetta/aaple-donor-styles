@@ -604,7 +604,7 @@ select.form-control-inline {
   justify-content: center !important;
   width: 100% !important;
   min-height: 52px !important;
-  padding: 12px 20px !important;
+  padding: 13px 20px 11px !important;
   margin: 0 !important;
   background: #fff !important;
   border: 1.5px solid var(--hairline) !important;
@@ -613,7 +613,7 @@ select.form-control-inline {
   font-family: 'DM Sans', sans-serif !important;
   font-weight: 700 !important;
   font-size: 16px !important;
-  line-height: 1.3 !important;
+  line-height: 1.2 !important;
   text-align: center !important;
   text-shadow: none !important;
   cursor: pointer !important;
@@ -678,32 +678,20 @@ select.form-control-inline {
 }
 
 /* The "Other" amount option (last one with text input).
-   De-emphasized with a dashed border + transparent background so it
-   doesn't visually compete with the real preset amounts. */
+   Spans both columns; otherwise inherits the same look + hover state
+   as the preset amount pills for visual consistency. */
 label.btn.btn-primary.col-xs-12.other-amount {
   grid-column: span 2 !important;
-  border-style: dashed !important;
-  background: transparent !important;
-  min-height: 48px !important;
-  color: var(--muted) !important;
-}
-label.btn.btn-primary.col-xs-12.other-amount:hover {
-  border-color: var(--maroon) !important;
-  color: var(--ink) !important;
-  background: transparent !important;
-}
-label.btn.btn-primary.col-xs-12.other-amount.active {
-  border-style: solid !important;
 }
 .otherAmountText.other-amount-long-text {
   width: 100% !important;
   border: none !important;
   background: transparent !important;
-  padding: 14px 16px !important;
+  padding: 0 !important;
   text-align: center !important;
   font-family: inherit !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
   color: inherit !important;
 }
 .otherAmountText.other-amount-long-text::placeholder {
